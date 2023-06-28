@@ -1,0 +1,39 @@
+FROM php:8.2-fpm-alpine
+
+WORKDIR /var/www/app
+
+RUN apk update --no-cache \
+&& apk add \
+icu-dev \
+supervisor \
+oniguruma-dev \
+tzdata
+
+
+# Set timezone
+ENV TZ=America/Sao_Paulo
+
+
+# Install supervisord
+RUN mkdir -p "/etc/supervisor/logs"
+COPY ./supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+
+# Install dependencies
+RUN apk add --update --virtual .phpize-deps $PHPIZE_DEPS libxml2-dev curl-dev linux-headers oniguruma-dev imap-dev openssl-dev
+
+# install extensions
+RUN docker-php-ext-install dom curl mbstring opcache pdo_mysql
+
+RUN apk add --no-cache pcre-dev $PHPIZE_DEPS \
+        && pecl install redis \
+        && docker-php-ext-enable redis.so
+
+
+RUN echo 'memory_limit = 512M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
+
+RUN rm -rf /var/cache/apk/*
+ 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+ 
+CMD ["php-fpm"]
