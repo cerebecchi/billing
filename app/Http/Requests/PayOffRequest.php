@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-use Illuminate\Validation\Factory as ValidationFactory;
-use Illuminate\Http\Request;
 
 class PayOffRequest extends FormRequest
 {

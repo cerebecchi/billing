@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Exceptions\PayOffException;
 use App\Models\Debt;
 use App\Repositories\Db\DebtRepository;
 
@@ -21,8 +22,9 @@ class PayOffService
         return $this->debtRepository->create($debt);
     }
 
-    public function payOffDebt(array $data): ?Debt
+    public function payOffDebt(array $data): Debt|bool
     {
+        $debt = false;
         /**
          * was thought to use laravel "resource" but ignored because of time
          */
@@ -32,7 +34,11 @@ class PayOffService
             'paid_amount' => $data['paidAmount'],
             'paid_by' => $data['paidBy'],
         ];
-        $debt = $this->debtRepository->update($data['id'], $data);
+        try {
+            $debt = $this->debtRepository->update($data['id'], $data);
+        } catch (\Exception $e) {
+            throw new PayOffException('Error during payment update: ' . $e->getMessage());
+        }
 
         return $debt;
     }
