@@ -6,7 +6,7 @@ yarn-error.log
 
 .env.encrypted
 
-.vscode/settings.json
+.vscode/*
 
 # Laravel 4 specific
 bootstrap/compiled.php
