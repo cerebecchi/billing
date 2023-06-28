@@ -1,0 +1,12 @@
+name,governmentId,email,debtAmount,debtDueDate,debtId
+John Doe,11111111111,johndoe@kanastra.com.br,1000000.00,2022-10-12,8291
+João da Silva,056.765.875-23,joao.silva@kanastra.com,1000.00,2023-07-01,1
+Maria Santos,091.123.567-89,maria.santos@kanastra.com,500.50,2023-06-30,2
+Pedro Almeida,986.345.432-10,pedro.almeida@kanastra.com,2000.00,2023-07-05,3
+Ana Souza,750.421.870-35,ana.souza@kanastra.com,1500.00,2023-07-10,4
+José Pereira,203.456.890-12,jose.pereira@kanastra.com,800.00,2023-06-29,5
+Laura Oliveira,231.674.850-90,laura.oliveira@kanastra.com,1200.00,2023-07-03,101
+Carlos Mendes,656.458.730-56,carlos.mendes@kanastra.com,750.50,2023-07-07,102
+Amanda Rodrigues,397.682.491-08,amanda.rodrigues@kanastra.com,900.00,2023-07-02,103
+Bruno Ferreira,025.736.840-11,bruno.ferreira@kanastra.com,1800.00,2023-07-06,104
+Sandra Gomes,315.790.126-50,sandra.gomes@kanastra.com,600.00,2023-07-04,105

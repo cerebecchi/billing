@@ -1,0 +1,68 @@
+version: "3"
+services:
+  db:
+    image: "mysql:8.0.21"
+    networks:
+      network_billing:
+        ipv4_address: 172.20.199.18
+    restart: always
+    container_name: mysqlbilling
+    command: --sql_mode="NO_ENGINE_SUBSTITUTION"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    ports:
+      - "3306:3308"
+    volumes:
+        - ${MYSQL_PATH}:/var/lib/mysql
+  phpmyadmin:
+    image: "phpmyadmin/phpmyadmin"
+    networks:
+      network_billing:
+        ipv4_address: 172.20.199.19
+    restart: always
+    container_name: phpmyadminbilling
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASS}
+    ports:
+      - "8080:80"
+    links:
+      - db:db
+    depends_on:
+      - db
+  nginx:
+      container_name: nginx
+      image: nginx:latest
+      restart: 'always'
+      ports:
+          - 80:80
+      volumes:
+          - ./docker/nginx/site.conf:/etc/nginx/conf.d/site.conf
+          - ../billing:/var/www/app
+      links:
+          - billing
+      networks:
+        network_billing:
+          ipv4_address: 172.20.199.227
+  billing:
+    build: ./docker
+    container_name: billing
+    volumes:
+        - ../billing:/var/www/app
+    networks:
+      network_billing:
+        ipv4_address: 172.20.199.228
+    restart: always
+  redis_billing:                       #6
+    image: "redis:alpine"
+    networks:
+      network_billing:
+        ipv4_address: 172.20.199.229
+    restart: always
+    container_name: redis_billing
+networks:
+  network_billing:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.199.1/24
